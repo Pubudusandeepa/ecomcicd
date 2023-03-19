@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  frontend:
+    build: ./client
+    container_name: react-app
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    networks:
+      - node-webapp-network
+    depends_on:
+      - backend
+
+  backend:
+    build: ./server
+    container_name: node-api
+    ports:
+      - "8080:8080"
+    restart: always
+    networks:
+      - node-webapp-network
+    # depends_on:
+    #   - database
+
+  # database:
+  #   image: mongo
+  #   container_name: mongo-db
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME=ROOT
+  #     - MONGO_INITDB_ROOT_PASSWORD=ROOT
+  #   ports:
+  #     - "27017:27017"
+  #   networks:
+  #     - node-webapp-network
+
+networks:
+  node-webapp-network:
+    driver: bridge
